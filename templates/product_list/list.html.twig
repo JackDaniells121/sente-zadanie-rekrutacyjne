@@ -1,14 +1,79 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!-- Insert this where you want the table to appear -->
-    <div id="products">Loading...</div>
+    <div class="mt-2"></div>
+    <table id="products" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Sku</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.sku }}</td>
+                <td class="name-click" >{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                {% if product.discount > 0 %}
+                    <td><s>{{ product.price / 100 }}</s> <div style="color: #B0413E">{{ ((product.price / 100) * (100 - product.discount) / 100)|round(2) }}</div></td>
+                {% else %}
+                    <td>{{ product.price / 100 }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <!-- Insert this at the end of your body element, but before the closing tag -->
+    <!-- Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="image" class="img-thumbnail" src="{{ asset('images/woda_mineralna.jpeg') }}">
+                    <div id="description"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
     <script>
         $(function() {
-            $('#products').initDataTables({{ datatable_settings(datatable) }});
+            $('#products').DataTable();
+        });
+
+        $('.name-click').click(function(){
+
+            let text = $(this).next('td').text();
+            $('#description').html(text);
+            let assetImages = [
+                "{{ asset('images/woda_mineralna.jpeg') }}",
+                "{{ asset('images/maska_ochronna.jpeg') }}",
+                "{{ asset('images/kask_ochronny.jpeg') }}",
+                "{{ asset('images/ser_zolty.jpeg') }}",
+                "{{ asset('images/buty_fila.jpeg') }}",
+                "{{ asset('images/mleko.jpeg') }}",
+            ];
+
+            $('#image').attr("src", assetImages[Math.floor(Math.random()*assetImages.length)]);
+
+            let modal = new bootstrap.Modal(document.getElementById('productModal'), {
+                keyboard: false
+            })
+
+            modal.show();
         });
     </script>
 {% endblock %}
