@@ -62,5 +62,4 @@ class appTest extends KernelTestCase
 
         $this->assertSame(round($finalPrice,2), round($product->getPriceAfterDiscount(), 2));
     }
-
 }
