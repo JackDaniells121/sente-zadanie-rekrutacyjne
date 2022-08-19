@@ -20,9 +20,9 @@
                 <td class="name-click" >{{ product.name }}</td>
                 <td>{{ product.description }}</td>
                 {% if product.discount > 0 %}
-                    <td><s>{{ product.price / 100 }}</s> <div style="color: #B0413E">{{ ((product.price / 100) * (100 - product.discount) / 100)|round(2) }}</div></td>
+                    <td><s>{{ product.price }}</s> <div style="color: #B0413E">{{ product.getPriceAfterDiscount|round(2) }}</div></td>
                 {% else %}
-                    <td>{{ product.price / 100 }}</td>
+                    <td>{{ product.price }}</td>
                 {% endif %}
             </tr>
             {% endfor %}

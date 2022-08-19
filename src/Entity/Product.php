@@ -72,9 +72,14 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
-        return $this->price;
+        return $this->price / 100;
+    }
+
+    public function getPriceAfterDiscount(): ?float
+    {
+        return $this->getPrice()  * (100 - $this->discount) / 100;
     }
 
     public function setPrice(int $price): self
